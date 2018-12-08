@@ -4,13 +4,6 @@ import pandas as pd
 from tkinter import *
 from tkinter import messagebox
 
-class bcolors:
-
-	BRED='\033[1;91m'; YEL='\033[1;33m'; CYA='\033[0;36m'
-	LGRE='\033[1;32m'; ORA='\033[0;33m'; GRE='\033[0;32m'
-	LPUR='\033[1;35m'; PUR='\033[0;35m'; DGRA='\033[1;30m'
-	LBLU='\033[1;34m'; U='\033[4m'; B='\033[1m'; NC='\033[0m'
-
 def rename_xls():
 	#Renaming file extension case
 	for files in os.listdir(pwd):
@@ -20,7 +13,7 @@ def rename_xls():
 			os.rename(files, files.replace('.XLSX', '.xlsx'))
 
 def rename_space():
-	print(bcolors.B, 'Removing whitespaces...')
+	print('Removing whitespaces...')
 	for files in os.listdir(pwd):
 		if files.endswith('.xls') or files.endswith('.xlsx') or files.endswith('.csv'):
 			os.rename(files, files.replace(' ', '_'))
@@ -29,11 +22,11 @@ def get_xls():
 	for files in os.listdir(pwd):
 		if files.endswith('.xls') or files.endswith('.xlsx'):
 			xlsLs.append(files)
-			print(bcolors.BRED, '  [*]', bcolors.LGRE, files)
-	print(bcolors.CYA, ' ', len(xlsLs), 'Excel files found...\n', bcolors.NC)
+			print('  [*]', files)
+	print('  ', len(xlsLs), 'Excel files found...')
 
 def convert():
-	print(bcolors.B, 'Converting excel files to CSV UTF-8 format...', bcolors.NC)
+	print('Converting excel files to CSV UTF-8 format...')
 	file1_xls = pd.read_excel(supplyXLS, 'Sheet1', index_col=None)
 	file1_xls.to_csv(supplyXLS.replace('.xlsx', '') + '.csv', sep=',', encoding='UTF-8')
 
@@ -47,11 +40,11 @@ def get_csv():
 	for files in os.listdir(pwd):
 		if files.endswith('.csv'):
 			csvLs.append(files)
-			print(bcolors.BRED, '  [*]', bcolors.LGRE, files)
-	print(bcolors.CYA, ' ', len(csvLs), 'CSV files found...\n', bcolors.NC)
+			print('  [*]', files)
+	print('  ', len(csvLs), 'CSV files found...\n')
 
 def del_col():
-	print(bcolors.B, 'Deleting columns from', supplyCSV, '...\n', bcolors.NC)
+	print('Deleting columns from', supplyCSV, '...\n')
 	with open(forCSV, 'r', encoding='UTF-8') as for_csv:
 		df = pd.read_csv(for_csv, low_memory=False)
 		with open(supplyCSV, 'r') as supply_csv:
@@ -65,7 +58,7 @@ def del_col():
 
 def filter_rows():
 	#latest sheet(#FILTER 1,511 records)
-	print(bcolors.B, 'Filtering Rows...\n', bcolors.NC)
+	print('Filtering Rows...\n')
 	with open('draft.csv', 'r', encoding='UTF-8') as draft_csv:
 		df = pd.read_csv(draft_csv, low_memory=False)
 		df = df.loc[df['IG'].isin(['SFDC IPS', 'Oracle IPS', 'Workday IPS']) | df['Resources Reqd From'].isin(['Salesforce IPS', 'Oracle IPS', 'Workday IPS'])]
@@ -73,7 +66,7 @@ def filter_rows():
 		output.to_csv('draft.csv', index=False)
 
 def vlookup():
-	print(bcolors.B, 'VLOOKUP', hcCSV, '&\n', forCSV + str('...\n'), bcolors.NC)
+	print('VLOOKUP', hcCSV, '&\n', ' ', forCSV, '\n')
 	with open('draft.csv', 'r', encoding='UTF-8') as draft_csv:
 		df = pd.read_csv(draft_csv)
 		with open(hcCSV, 'r', encoding='UTF=8') as hc_csv:
@@ -95,9 +88,9 @@ def save_output():
 	os.remove(hcCSV)
 	#os.remove(forCSV)
 
-	print(bcolors.PUR, bcolors.B, 'Enter output filename :', bcolors.NC, bcolors.CYA)
+	print('Enter output filename :')
 	fn = input('	')
-	print(bcolors.ORA, '\n Saving output file as: \n', bcolors.BRED, ' [*]', bcolors.PUR, fn + str('.csv'))
+	print('Saving output file as: \n', ' [*]', fn + str('.csv'))
 	try:
 		os.rename('output.csv', fn + '.csv')
 	except FileExistsError:
@@ -108,17 +101,17 @@ def save_output():
 	root.withdraw()
 	messagebox.showinfo(title='NOTE: ', message='\nPlease find and replace all characters "Ã±" to "ñ" manually...\nClick OK to open the output file.')
 
-	print(bcolors.ORA, 'Opening output file: \n', bcolors.BRED, ' [*]', bcolors.GRE, pwd + str('\\') + bcolors.PUR + fn + str('.csv\n'))
+	print('Opening output file: \n', ' [*]', pwd + str('\\') + fn + str('.csv\n'))
 	os.startfile(fn + '.csv')
 
 if __name__ == '__main__':
 
-	print(bcolors.YEL, '\n +-----------+-----------+', bcolors.NC)
-	print(bcolors.BRED, ' Supply Automation Tool', bcolors.NC)
-	print('   by', bcolors.LGRE, 'Mark Mon Monteros', bcolors.NC)
-	print(bcolors.YEL, '+-----------+-----------+', bcolors.NC)
-	print(bcolors.CYA, ' Coded in Python ver 3.7*\n', bcolors.NC)
-	print(bcolors.ORA, 'NOTE:', bcolors.LBLU, 'Please convert manually password-protected files\n        to CSV-UTF8 before executing this program.\n', bcolors.NC)
+	print('\n+-----------+-----------+')
+	print(' Supply Automation Tool')
+	print('   by Mark Mon Monteros')
+	print('+-----------+-----------+')
+	print(' Coded in Python ver 3.7*\n')
+	print('NOTE:', 'Please convert manually password-protected files\n        to CSV-UTF8 before executing this program.\n')
 
 	pwd = os.path.dirname(os.path.realpath(__file__))
 	xlsLs = []
@@ -152,4 +145,4 @@ if __name__ == '__main__':
 	vlookup()
 	save_output()
 
-	print(bcolors.CYA, 'D', bcolors.LGRE, 'O', bcolors.YEL, 'N', bcolors.PUR, 'E', bcolors.NC, bcolors.B, '!!!')
+	print('DONE !!!')
