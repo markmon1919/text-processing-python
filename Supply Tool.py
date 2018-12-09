@@ -110,7 +110,7 @@ class SupplyTool():
 
 		print('Enter output filename :')
 		fn = input('	')
-		print('Saving output file as: \n', ' [*]', fn + str('.csv'))
+		print('Saving output file as : \n', ' [*]', fn + str('.csv'))
 		try:
 			os.rename('output.csv', fn + '.csv')
 		except FileExistsError:
@@ -121,7 +121,7 @@ class SupplyTool():
 		root.withdraw()
 		messagebox.showinfo(title='NOTE: ', message='\nPlease find and replace all characters "Ã±" to "ñ" manually...\nClick OK to open the output file.')
 
-		print('Opening output file: \n', ' [*]', self.path + str('\\') + fn + str('.csv\n'))
+		print('Opening output file : \n', ' [*]', self.path + str('\\') + fn + str('.csv\n'))
 		os.startfile(fn + '.csv')
 
 if __name__ == '__main__':
