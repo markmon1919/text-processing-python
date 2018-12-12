@@ -6,8 +6,9 @@ import pandas as pd
 
 class Ui_SupplyTool(object):
 
+    clock_start = time.time() #Time before the operations start
+
     def __init__(self):
-        self.before = time.time() #Time before the operations start
         self.path = os.path.dirname(os.path.realpath(__file__))
         self.dump = self.path + '\\' + '.csv\\'
         self.forF = None
@@ -293,14 +294,14 @@ class Ui_SupplyTool(object):
             df = pd.read_csv(draft_csv)
             with open(self.hc_dest, 'r', encoding='UTF=8') as hc_csv:
                 df2 = pd.read_csv(hc_csv)
-                df2 = df2[['Name', 'Technology']]
-                output = df.merge(df2, on=['Name'], how='outer')
+                df2 = df2[['Name', 'Technology']].drop_duplicates()
+                output = df.merge(df2, on=['Name'], how='left')
                 output.to_csv(self.draft, index=False)
         #take not null values or drop null values and 
-        #replace all NULL to Other in Technology Column
+        #replace all NULL to Non-Cloud in Technology Column
         with open(self.draft, 'r', encoding='UTF-8') as draft_csv:
             df = pd.read_csv(draft_csv)
-            df['Technology'] = df['Technology'].fillna('Other')
+            df['Technology'] = df['Technology'].fillna('Non-Cloud')
             output = df[pd.notnull(df['Personnel No'])]
             output.to_csv(self.draft, index=False)
 
@@ -343,8 +344,8 @@ class Ui_SupplyTool(object):
             self.console.append('\n[*]' + str(self.fn))
             os.startfile(self.fn)
 
-        after = time.time() #Time after it finished
-        self.console.append('\nD O N E !!! \n[ Finished in ' + str(self.before-after) + ' seconds ]')
+        clock_end = time.time() #Time after it finished
+        self.console.append('\nD O N E !!! \n[ Finished in ' + str(self.clock_start-clock_end) + ' seconds ]')
 
 if __name__ == '__main__':
 
